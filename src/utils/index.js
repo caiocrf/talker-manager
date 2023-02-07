@@ -1,10 +1,12 @@
 const fs = require('fs').promises;
-const { join } = require('path');
+
+const path = require('path');
+
+const pathresolveTalker = path.resolve(__dirname, '../talker.json');
 
 const readTalker = async () => {
  try {
-    const readTalkerFile = await fs.readFile(join(__dirname, '../talker.json'),
-    'utf-8');
+    const readTalkerFile = await fs.readFile(pathresolveTalker, 'utf-8');
     return JSON.parse(readTalkerFile);
 } catch (error) {
    return error.message;
