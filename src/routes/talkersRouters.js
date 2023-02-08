@@ -20,4 +20,5 @@ route.get('/talker/:id', async (requeste, response) => {
  }
  response.status(200).json(talker);
 });
+
 module.exports = route;
