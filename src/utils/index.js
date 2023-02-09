@@ -13,6 +13,15 @@ const readTalker = async () => {
 }
 };
 
+const writeTalker = async (newTalker) => {
+ try {
+    await fs.writeFile(pathresolveTalker, 
+        JSON.stringify(newTalker));
+    return JSON.parse(newTalker);
+ } catch (error) {
+    return null;
+ }
+};
 const getAllTalker = async () => {
     const talkers = await readTalker();
     return talkers;
@@ -20,4 +29,5 @@ const getAllTalker = async () => {
 
 module.exports = {
     getAllTalker,
+    writeTalker,
 };

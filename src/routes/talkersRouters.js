@@ -1,8 +1,18 @@
 const express = require('express');
 
+const vAge = require('../talkerMiddlewares/validateAge');
+
+const vAuth = require('../talkerMiddlewares/validateAutho');
+
+const vName = require('../talkerMiddlewares/validateName');
+
+const vRate = require('../talkerMiddlewares/validateRate');
+
+const vTalk = require('../talkerMiddlewares/validateTalk');
+
 const route = express.Router();
 
-const { getAllTalker } = require('../utils/index');
+const { getAllTalker, writeTalker } = require('../utils/index');
 
 route.get('/talker', async (_requeste, response) => {
     const talker = await getAllTalker();
@@ -21,4 +31,24 @@ route.get('/talker/:id', async (requeste, response) => {
  response.status(200).json(talker);
 });
 
+route.post('/talker', vAuth, vName, vAge, 
+vTalk, vRate, async (req, res) => {
+try {
+  const { name, talk, age } = await req.body;
+    const talkerJSON = await getAllTalker();
+    const addInfoTalkers = {
+      id: (talkerJSON.length + 1),
+      name,
+      age,
+      talk: { ...talk },
+    };
+    const newstalkers = [
+      ...talkerJSON, addInfoTalkers,
+    ];
+    await writeTalker(newstalkers);
+    return res.status(201).json(addInfoTalkers);
+} catch (error) {
+  console.log(error);
+}
+});
 module.exports = route;

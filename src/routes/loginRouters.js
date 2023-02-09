@@ -26,7 +26,7 @@ const emailValidation = (req, res, next) => {
     return res.status(400).json({
          message: 'O "email" deve ter o formato "email@email.com"' });
    }
-   next();
+    next();
 };
 
 const passwordValidation = (req, res, next) => {
@@ -44,6 +44,7 @@ const passwordValidation = (req, res, next) => {
 };
 
   route.post('/login', emailValidation, passwordValidation, (_req, res) => {
-    res.status(200).json({ token: createtoken() });
+    const token = createtoken();
+   return res.status(200).json({ token });
   });
 module.exports = route;
