@@ -73,4 +73,13 @@ vTalk,
   await upTalkers(getAllT);
   res.status(200).json(getAllT[index]);
 });
+
+route.delete('/talker/:id', vAuth, async (req, res) => {
+  const { id } = req.params;
+  const talkers = await getAllTalker();
+  const filteredTalkers = talkers.filter((e) => e.id !== Number(id));
+
+  await upTalkers(filteredTalkers);
+  res.status(204).end();
+});
 module.exports = route;
