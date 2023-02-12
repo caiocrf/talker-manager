@@ -12,7 +12,7 @@ const vTalk = require('../talkerMiddlewares/validateTalk');
 
 const route = express.Router();
 
-const { getAllTalker, writeTalker } = require('../utils/index');
+const { getAllTalker, writeTalker, upTalkers } = require('../utils');
 
 route.get('/talker', async (_requeste, response) => {
     const talker = await getAllTalker();
@@ -20,9 +20,9 @@ route.get('/talker', async (_requeste, response) => {
   });
 
 route.get('/talker/:id', async (requeste, response) => {
- const talkers = await getAllTalker();
+ const getAllT = await getAllTalker();
  const { id } = requeste.params;
- const talker = talkers.find((p) => p.id === Number(id));
+ const talker = getAllT.find((p) => p.id === Number(id));
  if (!talker) {
   return response.status(404).json({
     message: 'Pessoa palestrante não encontrada',
@@ -50,5 +50,27 @@ try {
 } catch (error) {
   console.log(error);
 }
+});
+
+route.put('/talker/:id', 
+vAuth, 
+vName, 
+vAge, 
+vTalk,
+ vRate, async (req, res) => {
+  const { id } = req.params;
+  const { name, age, talk: { watchedAt, rate } } = req.body;
+  const getAllT = await getAllTalker();
+  const index = getAllT.findIndex((e) => e.id === Number(id));
+  getAllT[index] = { id: Number(id),
+    name,
+    age,
+    talk: {
+      watchedAt,
+      rate,
+    },
+  };
+  await upTalkers(getAllT);
+  res.status(200).json(getAllT[index]);
 });
 module.exports = route;

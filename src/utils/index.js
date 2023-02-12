@@ -27,7 +27,12 @@ const getAllTalker = async () => {
     return talkers;
 };
 
+const upTalkers = async (edit) => {
+  const newstalkersUP = JSON.stringify(edit, null, 2);
+  await fs.writeFile(pathresolveTalker, newstalkersUP);
+};
 module.exports = {
     getAllTalker,
     writeTalker,
+    upTalkers,
 };
